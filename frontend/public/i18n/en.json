@@ -1,0 +1,132 @@
+{
+  "NAV": {
+    "HOME": "Home",
+    "STUDIO": "Studio",
+    "WORK": "Work",
+    "CONTACT": "Contact",
+    "MENU": "Menu",
+    "CLOSE": "Close"
+  },
+  "COMMON": {
+    "CHAT_WITH": "Chat with SE.AGENCY",
+    "GO_HOME": "Return Home"
+  },
+  "NOT_FOUND": {
+    "TITLE": "Lost in",
+    "SUBTITLE": "Space?",
+    "DESC": "The page you're looking for has drifted into another dimension. Let's get you back to the mothership."
+  },
+  "HOME": {
+    "HERO_TITLE_1": "Transform Your Brand's",
+    "HERO_TITLE_2": "Story into",
+    "HERO_IMPACT": "Impact",
+    "HERO_DESC": "We craft social media campaigns and unforgettable branding, Our cinematic content is designed to drive real results.",
+    "HERO_CTA": "Discover Our Work",
+    "SCROLL": "Scroll",
+    "FEATURED_WORK_SUB": "Featured Work / 01-04",
+    "VISION_TEXT_1": "We are a",
+    "VISION_TEXT_2": "diligent",
+    "VISION_TEXT_3": "team, that's passionate about turning ideas into digital realities.",
+    "SERVICES_SUB": "Services / 02",
+    "SERVICES_TEXT_1": "We are an",
+    "SERVICES_TEXT_2": "unusual",
+    "SERVICES_TEXT_3": "digital agency focusing on transforming your vision into a captivating digital experience.",
+    "CLIENTS_SUB": "Proven Success",
+    "CLIENTS_TITLE": "Trusted by global visionaries.",
+    "CTA_TITLE": "Ready to",
+    "CTA_SUB": "craft the future?",
+    "CTA_BOOK": "Book a meeting"
+  },
+  "SERVICES": {
+    "BRAND": {
+      "TITLE": "Brand",
+      "SUBTITLE": "Identities",
+      "DESC": "Our team will assist in developing a consistent brand voice, ensuring that all messages align with the brand's tone, values, objectives and goals.",
+      "TAGS": ["Logo", "Typography", "Color Palette", "Voice & Tone", "Guidelines"]
+    },
+    "DEVELOPMENT": {
+      "TITLE": "Smart",
+      "SUBTITLE": "Development",
+      "DESC": "Our team will work closely with you, taking the time to understand your vision and feedback in order to bring your ideas to life. We'll provide regular updates.",
+      "TAGS": ["Web Development", "App Development", "UI/UX Design", "Interactions", "CMS"]
+    },
+    "MARKETING": {
+      "TITLE": "Marketing",
+      "SUBTITLE": "Campaigns",
+      "DESC": "At SE.Agency, we recognize that effective marketing goes beyond simply promoting products or services. It involves understanding target audiences and crafting messages.",
+      "TAGS": ["Digital Marketing", "SEO", "Social Media", "Content Creation", "Email Marketing"]
+    }
+  },
+  "FOOTER": {
+    "COLLAB": "Collaboration",
+    "LET_TALK_1": "Let's",
+    "TALK": "Talk",
+    "EMAIL_US": "Email Us",
+    "NAV_TITLE": "Navigation",
+    "PORTFOLIO": "Portfolio",
+    "EXPERTISE": "Expertise",
+    "STORY": "Our Story",
+    "CONTACT": "Contact",
+    "SOCIAL_TITLE": "Social",
+    "LOCATIONS_TITLE": "Locations",
+    "POWERED_BY": "Powered by"
+  },
+  "STUDIO": {
+    "TITLE_1": "The",
+    "TITLE_STUDIO": "Studio",
+    "DESC": "We are a design-led development agency creating digital monuments for the next generation of brands.",
+    "SERVICES": "Services",
+    "CGI_MOTION": "CGI / Motion",
+    "ARCH": "NextJS Architecture",
+    "LOCATION": "Location",
+    "DIST_GLOBAL": "Distributed / Global",
+    "PHILOSOPHY": "Philosophy",
+    "UNCOMPROMISING": "Uncompromising"
+  },
+  "WORK": {
+    "SUB": "Portfolio / Perspective",
+    "MAIN_TITLE": "WORK",
+    "EXPLORE": "Begin Exploration",
+    "FOCUS_SUB": "Service / 0",
+    "MARQUEE_SUB": "Trusted by Global Visionaries",
+    "SAMPLER_SUB": "Portfolio Selection",
+    "SAMPLER_TITLE_1": "Featured",
+    "SAMPLER_TITLE_2": "Impact",
+    "CASE_STUDY": "View Case Study",
+    "EXCELLENCE_LOADING": "Excellence Loading...",
+    "SAMPLER_DESC": "We are currently curating our finest moments for this showcase. Keep scrolling to view our archive.",
+    "BRIDGE_SUB": "Endless Creativity",
+    "BRIDGE_TITLE_1": "The Full",
+    "BRIDGE_TITLE_2": "Archive",
+    "FILTER_ALL": "All",
+    "FILTER_BRAND": "Brand",
+    "FILTER_DEV": "Development",
+    "FILTER_MARKETING": "Marketing",
+    "FILTER_CONTENT": "Content",
+    "NO_PROJECTS": "No projects found in this category.",
+    "START_STORY": "Start Your Story",
+    "COLLAB_BTN": "Let's Collaborate"
+  },
+  "CONTACT": {
+    "SAY": "Say",
+    "HELLO": "Hello",
+    "DECOR": "CONTACT CONTACT CONTACT",
+    "GET_IN_TOUCH": "Get in Touch",
+    "DESC": "Have a project in mind or just want to chat? We're always open to new ideas and collaborations. Our team of experts is ready to transform your vision into reality.",
+    "EMAIL_LABEL": "Drop us a line",
+    "SOCIAL_LABEL": "Follow our journey",
+    "NAME": "What's your name?",
+    "NAME_PLACEHOLDER": "Enter your name",
+    "EMAIL": "Email address",
+    "SERVICE": "What are you looking for?",
+    "CHOOSE_SERVICE": "Choose a service",
+    "MESSAGE": "Tell us about your project",
+    "MESSAGE_PLACEHOLDER": "Share your vision...",
+    "SUBMIT": "Send Message",
+    "SENDING": "Sending...",
+    "SENT": "Message Sent!",
+    "THANKS_TITLE": "Thank You!",
+    "THANKS_DESC": "We've received your message and will get back to you within 24 hours.",
+    "SEND_ANOTHER": "Send another message"
+  }
+}

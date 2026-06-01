@@ -1,0 +1,46 @@
+# Dependency directories
+node_modules/
+**/node_modules/
+
+# Local env files
+.env
+.env.local
+.env.*.local
+**/local.properties
+**/secrets.properties
+
+# Angular cache and compiled output
+.angular/
+**/dist/
+**/tmp/
+**/out-tsc/
+**/bazel-out/
+**/.angular/cache
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-error.log
+**/libpeerconnection.log
+**/testem.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.history/
+**/connect.lock
+**/coverage
+**/__screenshots__/
