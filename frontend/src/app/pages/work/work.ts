@@ -135,7 +135,7 @@ import { environment } from '../../../environments/environment';
                     <div #horizontalScroll class="flex gap-10 px-10 md:px-32 relative rtl:flex-row-reverse">
                         @for (project of featuredProjects(); track project._id; let i = $index) {
                             <div (click)="goToProject(project.slug)" class="sampler-card flex-shrink-0 w-[80vw] md:w-[540px] lg:w-[500px] xl:w-[580px] aspect-[16/10] bg-zinc-900 rounded-[3rem] overflow-hidden relative group cursor-pointer" appMagnet [appMagnetStrength]="0.05">
-                                <img [src]="project.img" [alt]="project.title" class="absolute inset-0 w-full h-full object-contain transition-transform duration-1000 group-hover:scale-105">
+                                <img [src]="project.img" [alt]="project.title" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
                                 <div class="absolute inset-0 bg-black/20 group-hover:bg-black/5 transition-colors"></div>
                                 
                                 <div class="absolute inset-0 p-10 flex flex-col justify-between z-10 rtl:text-right">
@@ -182,14 +182,14 @@ import { environment } from '../../../environments/environment';
         <section class="pt-32 pb-20 px-6 md:px-10 lg:px-20 bg-zinc-50">
             <!-- Categories -->
             <div class="flex flex-wrap gap-4 mb-20 justify-center">
-                @for (cat of categories; track cat) {
-                    <button 
+                @for (cat of categories(); track cat) {
+                    <button
                     (click)="filterBy(cat)"
                     class="px-8 py-3 rounded-full font-mono text-[10px] uppercase tracking-widest font-black transition-all duration-300 border border-black/5"
-                    [ngClass]="activeCategory() === cat ? 'bg-black text-white shadow-xl' : 'bg-transparent text-neon-cyan/40 hover:bg-zinc-200'"
+                    [ngClass]="activeCategory() === cat ? 'bg-black text-white shadow-xl' : 'bg-transparent text-zinc-500 hover:bg-zinc-200'"
                     appMagnet [appMagnetStrength]="0.2"
                     >
-                        {{ 'WORK.FILTER_' + cat.toUpperCase() | translate }}
+                        {{ cat }}
                     </button>
                 }
             </div>
@@ -199,7 +199,7 @@ import { environment } from '../../../environments/environment';
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10 md:gap-16 relative z-20 max-w-7xl mx-auto rtl:flex-row-reverse">
                 @for (project of filteredProjects(); track project._id) {
                         <div (click)="goToProject(project.slug)" class="project-card-item group relative cursor-pointer overflow-hidden rounded-[3rem] bg-zinc-900 aspect-[4/3] md:aspect-[16/10] block" appMagnet [appMagnetStrength]="0.03">
-                            <img [src]="project.img" [alt]="project.title" class="absolute inset-0 w-full h-full object-contain transition-transform duration-1000 group-hover:scale-105">
+                            <img [src]="project.img" [alt]="project.title" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
                             <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
                             
                             <div class="absolute bottom-10 left-10 rtl:left-auto rtl:right-10 overflow-hidden">
@@ -215,6 +215,31 @@ import { environment } from '../../../environments/environment';
                     <p class="text-neon-cyan/30 font-mono uppercase tracking-[0.5em]">{{ 'WORK.NO_PROJECTS' | translate }}</p>
                 </div>
             }
+        </section>
+
+        <!-- Logos Showcase -->
+        <section class="py-24 md:py-32 bg-black px-6 md:px-10 lg:px-20">
+            <div class="mb-16 text-center">
+                <p class="font-mono text-[10px] uppercase tracking-[0.5em] text-neon-cyan mb-6">{{ 'HOME.CLIENTS_SUB' | translate }}</p>
+                <h2 class="text-3xl md:text-5xl font-body font-black text-white tracking-tighter uppercase italic">{{ 'HOME.CLIENTS_TITLE' | translate }}</h2>
+            </div>
+            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 md:gap-3">
+                @for (client of clients(); track client._id) {
+                    <div class="logo-showcase-item group h-28 md:h-32 flex flex-col items-center justify-center gap-2 rounded-2xl border border-white/8 hover:border-white/20 bg-white/[0.04] hover:bg-white/[0.08] transition-all duration-500 cursor-default relative overflow-hidden px-3">
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(224,16,40,0.08)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                        @if (client.logo) {
+                            <img [src]="getImageUrl(client.logo)" [alt]="client.name"
+                                 class="h-12 md:h-14 w-auto max-w-[85%] object-contain
+                                        brightness-0 invert opacity-40
+                                        group-hover:brightness-100 group-hover:invert-0 group-hover:opacity-100
+                                        transition-all duration-500 group-hover:scale-105">
+                        } @else {
+                            <span class="font-cosmic text-sm font-black text-white/40 group-hover:text-white transition-all duration-500 select-none uppercase text-center leading-tight px-2">{{ client.name }}</span>
+                        }
+                        <span class="font-mono text-[7px] uppercase tracking-widest text-white/25 group-hover:text-white/55 transition-all duration-500 select-none truncate max-w-full px-2 text-center">{{ client.name }}</span>
+                    </div>
+                }
+            </div>
         </section>
 
         <!-- Footer CTA -->
@@ -326,7 +351,12 @@ export class Work implements AfterViewInit {
         }
     ];
 
-    categories = ['All', 'Brand', 'Development', 'Marketing', 'Content'];
+    categories = computed(() => {
+        const cats = [...new Set(
+            this.projectService.projects().map(p => p.cat).filter(Boolean)
+        )] as string[];
+        return ['All', ...cats];
+    });
     activeCategory = signal('All');
 
     featuredProjects = computed(() => this.projectService.getFeaturedProjects());
@@ -441,18 +471,41 @@ export class Work implements AfterViewInit {
         // Project grid items entry in the final section
         const gridItems = gsap.utils.toArray('.project-card-item');
         if (gridItems.length > 0) {
-            gridItems.forEach((item: any) => {
-                gsap.from(item, {
-                    scrollTrigger: {
-                        trigger: item,
-                        start: 'top 95%', // Reveal sooner
-                        toggleActions: 'play none none reverse'
-                    },
-                    opacity: 0,
-                    y: 50,
-                    duration: 1,
-                    ease: 'power3.out'
-                });
+            gsap.from(gridItems, {
+                scrollTrigger: {
+                    trigger: '.project-card-item',
+                    start: 'top 90%',
+                    once: true,
+                },
+                opacity: 0,
+                y: 50,
+                stagger: 0.1,
+                duration: 1,
+                ease: 'power3.out',
+                clearProps: 'all',
+            });
+        }
+
+        // Logo showcase scroll animation
+        const logoItems = gsap.utils.toArray('.logo-showcase-item');
+        if (logoItems.length > 0) {
+            gsap.from(logoItems, {
+                scrollTrigger: {
+                    trigger: '.logo-showcase-item',
+                    start: 'top 85%',
+                    once: true,
+                },
+                opacity: 0,
+                y: 40,
+                scale: 0.85,
+                stagger: {
+                    amount: 1.2,
+                    from: 'start',
+                    grid: 'auto',
+                },
+                duration: 0.8,
+                ease: 'expo.out',
+                clearProps: 'all',
             });
         }
     }

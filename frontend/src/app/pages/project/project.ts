@@ -19,7 +19,7 @@ import { Subject, takeUntil } from 'rxjs';
       <!-- 1. Hero Banner -->
       <section class="pt-24 px-4 md:px-10 lg:px-20">
          <div class="project-banner relative w-full aspect-[21/9] md:aspect-[21/7] rounded-[2.5rem] overflow-hidden bg-white border border-black/10 shadow-2xl">
-              <div class="absolute inset-0 bg-cover bg-center" [style.backgroundImage]="'url(' + p.bannerImg + ')'"></div>
+              <div class="absolute inset-0 bg-cover bg-center" [style.backgroundImage]="cssUrl(p.bannerImg)"></div>
               <div class="absolute inset-0 bg-black/5"></div>
          </div>
       </section>
@@ -141,7 +141,7 @@ import { Subject, takeUntil } from 'rxjs';
              </div>
              
              <div class="relative w-full aspect-video rounded-[2.5rem] overflow-hidden bg-white group border border-black/10">
-                 <div class="absolute inset-0 bg-cover bg-center" [style.backgroundImage]="'url(' + p.videoThumb + ')'"></div>
+                 <div class="absolute inset-0 bg-cover bg-center" [style.backgroundImage]="cssUrl(p.videoThumb!)"></div>
                  <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
                       <div class="w-24 h-24 rounded-full bg-white text-black flex items-center justify-center scale-100 group-hover:scale-110 transition-transform cursor-pointer shadow-2xl">
                            <svg class="w-8 h-8 translate-x-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -187,6 +187,8 @@ export class Project implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild('nextSection') nextSection!: ElementRef;
   
   private destroy$ = new Subject<void>();
+  cssUrl(path: string): string { return `url('${path}')`; }
+
   activeCat = signal<string | null>(null);
   scrollProgress = signal(0);
   project = signal<ProjectData | null>(null);
@@ -325,13 +327,14 @@ export class Project implements AfterViewInit, OnInit, OnDestroy {
             gsap.from(sec, {
                 scrollTrigger: {
                     trigger: sec,
-                    start: 'top 95%',
-                    toggleActions: 'play none none reverse'
+                    start: 'top 90%',
+                    once: true,
                 },
                 opacity: 0,
                 y: 50,
                 duration: 1,
-                ease: 'power3.out'
+                ease: 'power3.out',
+                clearProps: 'all',
             });
         });
     });

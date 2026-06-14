@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef, ViewChild, ChangeDetectionStrategy, NgZone, computed, inject } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild, ChangeDetectionStrategy, NgZone, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -82,19 +82,41 @@ import { environment } from '../../../environments/environment';
         </h2>
       </div>
 
+      <!-- Filter Tabs -->
+      <div class="flex flex-wrap gap-3 mb-12 justify-center">
+        @for (cat of homeCategories(); track cat) {
+          <button
+            (click)="filterFeatured(cat)"
+            class="px-6 py-2.5 rounded-full font-mono text-[10px] uppercase tracking-widest font-black transition-all duration-300 border"
+            [ngClass]="activeFilter() === cat
+              ? 'bg-neon-cyan text-white border-neon-cyan shadow-[0_0_20px_rgba(224,16,40,0.3)]'
+              : 'bg-transparent text-zinc-400 border-black/10 hover:border-neon-cyan/50 hover:text-neon-cyan'">
+            {{ cat }}
+          </button>
+        }
+      </div>
+
       <!-- Projects Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 relative z-20">
-        @for (project of projects(); track project._id) {
-          <div (click)="goToProject(project.slug)" class="project-item group cursor-pointer relative overflow-hidden rounded-[2.5rem] bg-zinc-100 aspect-[4/3] md:aspect-[16/10] block">
-              <img [src]="project.img" [alt]="project.title" class="absolute inset-0 w-full h-full object-contain transition-transform duration-1000 group-hover:scale-105">
-              <div class="absolute inset-0 bg-black/5 transition-colors"></div>
-              
+        @for (project of displayedProjects(); track project._id) {
+          <div (click)="goToProject(project.slug)" class="project-item group cursor-pointer relative overflow-hidden rounded-[2.5rem] bg-zinc-900 aspect-[4/3] md:aspect-[16/10] block">
+              <img [src]="project.img" [alt]="project.title" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
+              <div class="absolute inset-0 bg-black/20 group-hover:bg-black/5 transition-colors"></div>
+
               <!-- Content -->
               <div class="absolute bottom-10 left-10 rtl:left-auto rtl:right-10 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
                 <h3 class="text-white font-body text-4xl font-black tracking-tight drop-shadow-xl">{{ project.title }}</h3>
               </div>
           </div>
         }
+      </div>
+
+      <!-- View All Link -->
+      <div class="flex justify-center mt-14">
+        <a routerLink="/work" class="inline-flex items-center gap-4 px-10 py-5 border border-black/10 text-zinc-400 rounded-full font-mono text-xs uppercase tracking-[0.2em] font-black transition-all hover:border-neon-cyan hover:text-neon-cyan">
+          {{ 'HOME.HERO_CTA' | translate }}
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+        </a>
       </div>
     </section>
 
@@ -171,22 +193,22 @@ import { environment } from '../../../environments/environment';
         </div>
 
         <!-- Ticker strip -->
-        <div class="relative overflow-hidden mb-14 md:mb-20 border-t border-b border-white/5 py-5 md:py-7">
-            <div class="flex gap-16 md:gap-24 whitespace-nowrap clients-ticker">
+        <div class="relative overflow-hidden mb-14 md:mb-20 border-t border-b border-white/5 py-6 md:py-9">
+            <div class="flex gap-14 md:gap-24 whitespace-nowrap clients-ticker">
                 @for (client of clients(); track client._id) {
                     @if (client.logo) {
                         <img [src]="getImageUrl(client.logo)" [alt]="client.name"
-                             class="h-7 md:h-9 w-auto object-contain brightness-0 invert opacity-25 flex-shrink-0 pointer-events-none select-none">
+                             class="h-10 md:h-12 w-auto object-contain brightness-0 invert opacity-35 flex-shrink-0 pointer-events-none select-none">
                     } @else {
-                        <span class="text-xl md:text-2xl font-cosmic font-black text-white/15 flex-shrink-0 uppercase">{{ client.name }}</span>
+                        <span class="text-xl md:text-2xl font-cosmic font-black text-white/30 flex-shrink-0 uppercase">{{ client.name }}</span>
                     }
                 }
                 @for (client of clients(); track client._id + 'dup') {
                     @if (client.logo) {
                         <img [src]="getImageUrl(client.logo)" [alt]="client.name"
-                             class="h-7 md:h-9 w-auto object-contain brightness-0 invert opacity-25 flex-shrink-0 pointer-events-none select-none">
+                             class="h-10 md:h-12 w-auto object-contain brightness-0 invert opacity-35 flex-shrink-0 pointer-events-none select-none">
                     } @else {
-                        <span class="text-xl md:text-2xl font-cosmic font-black text-white/15 flex-shrink-0 uppercase">{{ client.name }}</span>
+                        <span class="text-xl md:text-2xl font-cosmic font-black text-white/30 flex-shrink-0 uppercase">{{ client.name }}</span>
                     }
                 }
             </div>
@@ -194,25 +216,28 @@ import { environment } from '../../../environments/environment';
 
         <!-- Logo Grid -->
         <div class="px-6 md:px-10 lg:px-20 relative z-10">
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
+            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 md:gap-3">
                 @for (client of clients(); track client._id) {
-                    <div class="client-logo-item group h-20 md:h-24 lg:h-28 flex flex-col items-center justify-center gap-2 rounded-2xl border border-white/5 hover:border-white/10 bg-white/[0.02] hover:bg-white/[0.05] transition-all duration-500 cursor-default relative overflow-hidden px-3"
+                    <div class="client-logo-item group h-32 md:h-36 flex flex-col items-center justify-center gap-3 rounded-2xl border border-white/8 hover:border-white/20 bg-white/[0.04] hover:bg-white/[0.08] transition-all duration-500 cursor-default relative overflow-hidden px-4"
                          appMagnet [appMagnetStrength]="0.12">
 
                         <!-- Hover glow -->
-                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(224,16,40,0.07)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(224,16,40,0.1)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 
                         @if (client.logo) {
                             <img [src]="getImageUrl(client.logo)"
                                  [alt]="client.name"
-                                 class="h-7 md:h-9 w-auto max-w-[80%] object-contain opacity-30 group-hover:opacity-100 transition-all duration-700 brightness-0 invert group-hover:brightness-100 group-hover:invert-0 grayscale group-hover:grayscale-0 scale-95 group-hover:scale-100">
+                                 class="h-16 md:h-20 w-auto max-w-[85%] object-contain
+                                        brightness-0 invert opacity-55
+                                        group-hover:brightness-100 group-hover:invert-0 group-hover:opacity-100
+                                        transition-all duration-500 group-hover:scale-105">
                         } @else {
-                            <span class="font-cosmic text-[10px] md:text-xs font-black text-white/25 group-hover:text-white/70 transition-all duration-700 select-none uppercase text-center leading-tight px-2">
+                            <span class="font-cosmic text-sm md:text-base font-black text-white/55 group-hover:text-white transition-all duration-500 select-none uppercase text-center leading-tight px-2">
                                 {{ client.name }}
                             </span>
                         }
 
-                        <span class="font-mono text-[7px] md:text-[8px] uppercase tracking-widest text-white/0 group-hover:text-white/25 transition-all duration-700 select-none truncate max-w-full px-2 text-center">
+                        <span class="font-mono text-[7px] uppercase tracking-widest text-white/25 group-hover:text-white/55 transition-all duration-500 select-none truncate max-w-full px-2 text-center">
                             {{ client.name }}
                         </span>
                     </div>
@@ -234,7 +259,7 @@ import { environment } from '../../../environments/environment';
         <div class="z-10 flex flex-col items-center text-center max-w-5xl">
             <p class="font-mono text-[10px] uppercase tracking-[0.5em] text-neon-cyan mb-12 opacity-80">{{ 'HOME.CLIENTS_SUB' | translate }}</p>
             
-            <h2 class="text-6xl md:text-[8rem] lg:text-[10rem] font-body font-black tracking-tighter leading-[0.85] mb-16 select-none uppercase italic">
+            <h2 class="text-6xl md:text-[8rem] lg:text-[10rem] font-body font-black tracking-tighter leading-[0.85] mb-16 select-none uppercase italic text-white">
                 {{ 'HOME.CTA_TITLE' | translate }} <br> 
                 <span class="text-neon-cyan/20">{{ 'HOME.CTA_SUB' | translate }}</span>
             </h2>
@@ -297,7 +322,7 @@ import { environment } from '../../../environments/environment';
       to { transform: rotate(360deg); }
     }
     .clients-ticker {
-      animation: ticker 30s linear infinite;
+      animation: ticker 60s linear infinite;
     }
     @keyframes ticker {
       0% { transform: translateX(0); }
@@ -330,7 +355,22 @@ export class Home implements AfterViewInit {
     private router = inject(Router);
     private transitionService = inject(TransitionService);
 
-    projects = computed(() => this.projectService.getFeaturedProjects());
+    activeFilter = signal('All');
+
+    homeCategories = computed(() => {
+        const cats = [...new Set(
+            this.projectService.getFeaturedProjects().map((p: any) => p.cat).filter(Boolean)
+        )] as string[];
+        return ['All', ...cats];
+    });
+
+    displayedProjects = computed(() => {
+        const featured = this.projectService.getFeaturedProjects();
+        const active = this.activeFilter();
+        const filtered = active === 'All' ? featured : featured.filter((p: any) => p.cat === active);
+        return filtered.slice(0, 4);
+    });
+
     clients = this.clientService.clients;
 
     getImageUrl(path: string | undefined): string {
@@ -370,6 +410,10 @@ export class Home implements AfterViewInit {
         }
     ];
 
+    filterFeatured(cat: string) {
+        this.activeFilter.set(cat);
+    }
+
     goToProject(slug: string | undefined) {
         if (!slug) return;
         const project = this.projectService.getProjectById(slug);
@@ -408,21 +452,23 @@ export class Home implements AfterViewInit {
 
             this.setupParallax();
 
-            // Project animations
-            gsap.utils.toArray('.project-item').forEach((item: any) => {
-                gsap.from(item, {
+            // Project animations — single trigger on the grid, staggered, fires once
+            const projectItems = gsap.utils.toArray('.project-item');
+            if (projectItems.length) {
+                gsap.from(projectItems, {
                     scrollTrigger: {
-                        trigger: item,
-                        start: 'top 95%',
-                        toggleActions: 'play none none reverse'
+                        trigger: '.project-item',
+                        start: 'top 88%',
+                        once: true,
                     },
                     opacity: 0,
-                    y: 50,
-                    scale: 0.95,
-                    duration: 1,
-                    ease: 'power3.out'
+                    y: 40,
+                    duration: 0.9,
+                    stagger: 0.08,
+                    ease: 'power3.out',
+                    clearProps: 'all',
                 });
-            });
+            }
 
             // Stacking cards animation logic
             const cards = gsap.utils.toArray('.service-card') as HTMLElement[];
@@ -475,7 +521,7 @@ export class Home implements AfterViewInit {
                 scrollTrigger: {
                     trigger: this.clientsSection.nativeElement,
                     start: 'top 70%',
-                    toggleActions: 'play none none reverse'
+                    once: true,
                 },
                 opacity: 0,
                 y: 60,
@@ -486,7 +532,8 @@ export class Home implements AfterViewInit {
                     grid: "auto"
                 },
                 duration: 1.2,
-                ease: "expo.out"
+                ease: "expo.out",
+                clearProps: 'all',
             });
         });
     }

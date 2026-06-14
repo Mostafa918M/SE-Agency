@@ -13,7 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
       <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-12 border-b border-white/5 pb-20 rtl:lg:flex-row-reverse">
           <div class="max-w-2xl">
               <p class="font-mono text-[10px] uppercase tracking-[0.5em] text-neon-cyan mb-6">{{ 'FOOTER.COLLAB' | translate }}</p>
-              <h2 class="text-4xl md:text-8xl font-body font-black tracking-tighter uppercase leading-[0.95] md:leading-[0.9] italic">
+              <h2 class="text-4xl md:text-8xl font-body font-black tracking-tighter uppercase leading-[0.95] md:leading-[0.9] italic text-white">
                   {{ 'FOOTER.LET_TALK_1' | translate }} <span class="text-white/20">{{ 'FOOTER.TALK' | translate }}</span>
               </h2>
           </div>
@@ -31,8 +31,8 @@ import { TranslateModule } from '@ngx-translate/core';
               <h3 class="font-mono text-[10px] uppercase tracking-[0.4em] text-white/40 mb-10">{{ 'FOOTER.NAV_TITLE' | translate }}</h3>
               <div class="flex flex-col gap-4">
                   <a href="/work" class="text-xl md:text-3xl font-body font-bold hover:text-neon-cyan transition-colors">{{ 'FOOTER.PORTFOLIO' | translate }}</a>
-                  <a href="/services" class="text-xl md:text-3xl font-body font-bold hover:text-neon-cyan transition-colors">{{ 'FOOTER.EXPERTISE' | translate }}</a>
-                  <a href="/about" class="text-xl md:text-3xl font-body font-bold hover:text-neon-cyan transition-colors">{{ 'FOOTER.STORY' | translate }}</a>
+                  <a href="/studio" class="text-xl md:text-3xl font-body font-bold hover:text-neon-cyan transition-colors">{{ 'FOOTER.EXPERTISE' | translate }}</a>
+                  <a href="/studio" class="text-xl md:text-3xl font-body font-bold hover:text-neon-cyan transition-colors">{{ 'FOOTER.STORY' | translate }}</a>
                   <a href="/contact" class="text-xl md:text-3xl font-body font-bold hover:text-neon-cyan transition-colors">{{ 'FOOTER.CONTACT' | translate }}</a>
               </div>
           </div>
